@@ -15,7 +15,7 @@
             "flags": {}
         }
     ],
-    "version": "1.0.1",
+    "version": "1.6.1",
     "minimumCoreVersion": "9",
     "compatibleCoreVersion": "10",
     "compatibility": {
@@ -46,5 +46,5 @@
     ],
     "url": "",
     "manifest": "https://github.com/ClipplerBlood/pf2-flat-check/releases/latest/download/module.json",
-    "download": "https://github.com/ClipplerBlood/pf2-flat-check/releases/1.0.1/download/module.zip"
+    "download": "https://github.com/ClipplerBlood/pf2-flat-check/releases/download/1.6.1/module.zip"
 }
