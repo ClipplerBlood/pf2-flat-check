@@ -3,9 +3,9 @@
     "id": "pf2-flat-check",
     "title": "PF2e Flat Check",
     "description": "PF2e Flat Check implements automatic Flat Checks when characters make weapon strikes or cast spells.",
-    "license": "https://github.com/jessev14/pf2-flat-check/blob/main/license",
-    "readme": "https://github.com/jessev14/pf2-flat-check/blob/main/README.md",
-    "bugs": "https://github.com/jessev14/pf2-flat-check/issues",
+    "license": "https://github.com/ClipplerBlood/pf2-flat-check/blob/main/license",
+    "readme": "https://github.com/ClipplerBlood/pf2-flat-check/blob/main/README.md",
+    "bugs": "https://github.com/ClipplerBlood/pf2-flat-check/issues",
     "author": "enso#0361",
     "authors": [
         {
@@ -45,6 +45,6 @@
     "languages": [
     ],
     "url": "",
-    "manifest": "",
-    "download": ""
+    "manifest": "https://github.com/ClipplerBlood/pf2-flat-check/releases/latest/download/module.json",
+    "download": "https://github.com/ClipplerBlood/pf2-flat-check/releases/1.0.1/download/module.zip"
 }
