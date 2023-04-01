@@ -97,7 +97,7 @@ function distanceBetween(token0, token1) {
   const x = Math.ceil(Math.abs(ray.dx / canvas.dimensions.size));
   const y = Math.ceil(Math.abs(ray.dy / canvas.dimensions.size));
   return Math.floor(Math.min(x, y) + Math.abs(y - x)) * canvas.dimensions.distance;
-};
+}
 
 
 function getCondition(token, target, isSpell) {
@@ -125,26 +125,44 @@ function getCondition(token, target, isSpell) {
 
   if (!checkingAttacker && attackerBlinded && !conditions.includes('hidden')) conditions.push('hidden');
   if (!checkingAttacker && attackerDazzled && !conditions.includes('concealed')) conditions.push('concealed');
+  
   // Get darkness conditions
-  if (!checkingAttacker && game.modules.get('pf2e-darkness-effects')?.active) {
-    const targetInDarkLight = currentActor.getFlag('pf2e-darkness-effects', 'isInDarkLight')
-    let lowLightSenses, darkLightSenses
-    if (!targetInDarkLight) {
-      lowLightSenses = ['lowLightVision', 'darkvision', 'greaterDarkvision']
-      darkLightSenses = ['darkvision', 'greaterDarkvision']
-    } else {
+  const modTokenlightconditionEnabled = game.modules.get('tokenlightcondition')?.active
+  const modDarknessEffectsEnabled = game.modules.get('pf2e-darkness-effects')?.active
+  let targetInDarkLight = null
+  let targetInDimLight = null
+  let targetInDarkness = null
+  let lowLightSenses, darkLightSenses
+  
+  if (!checkingAttacker && modTokenlightconditionEnabled) {
+    const targetLightLevel = currentActor.getFlag('tokenlightcondition', 'lightLevel')
+    targetInDarkness = targetLightLevel === 'dark'
+    targetInDimLight = targetLightLevel === 'dim'
+  }
+  else if (!checkingAttacker && modDarknessEffectsEnabled) {
+    targetInDarkness = currentActor.getFlag('pf2e-darkness-effects', 'darknessLevel') === 0;
+    targetInDimLight = currentActor.getFlag('pf2e-darkness-effects', 'darknessLevel') === 1;
+    targetInDarkLight = currentActor.getFlag('pf2e-darkness-effects', 'isInDarkLight')
+  }
+  
+  if (!checkingAttacker) {
+    if (targetInDarkLight) {
       lowLightSenses = ['darkvision', 'greaterDarkvision']
       darkLightSenses = ['greaterDarkvision']
+    } else {
+      lowLightSenses = ['lowLightVision', 'darkvision', 'greaterDarkvision']
+      darkLightSenses = ['darkvision', 'greaterDarkvision']
     }
     
     const attackerLowLightVision = token.actor.system.traits.senses.some(s => lowLightSenses.includes(s.type));
-    const targetInDimLight = currentActor.getFlag('pf2e-darkness-effects', 'darknessLevel') === 1;
-    if (targetInDimLight && !attackerLowLightVision && !conditions.includes('concealed')) conditions.push('concealed');
-
+    if (targetInDimLight && !attackerLowLightVision && !conditions.includes('concealed')) 
+      conditions.push('concealed');
+    
     const attackerDarkvision = token.actor.system.traits.senses.some(s => darkLightSenses.includes(s.type));
-    const targetInDarkness = currentActor.getFlag('pf2e-darkness-effects', 'darknessLevel') === 0;
-    if (targetInDarkness && !attackerDarkvision && !conditions.includes('hidden')) conditions.push('hidden');
+    if (targetInDarkness && !attackerDarkvision && !conditions.includes('hidden')) 
+      conditions.push('hidden');
   }
+  
   if (!conditions.length) return {};
 
   let stupefyLevel;
